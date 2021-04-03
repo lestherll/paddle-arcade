@@ -1,15 +1,42 @@
 import arcade
+from arcade.gui import UIManager
 
 from pong.constants import *
 from pong.player import Player
 from pong.game_objects.ball import Ball
 from pong.game_objects.paddle import Paddle
 
+from random import randint
+
+class Button(arcade.gui.UIFlatButton):
+    def on_click(self):
+        print("Clicked this button")
+
+
 class MenuView(arcade.View):
     """ Class that manages the 'menu' view. """
 
+    def __init__(self):
+        super().__init__()
+        self.ui_manager = UIManager()
+
+    def setup(self):
+        self.ui_manager.purge_ui_elements()
+        button = Button(
+            'FlatButton',
+            center_x=SCREEN_WIDTH/2,
+            center_y=SCREEN_HEIGHT-30,
+            width=250,
+            height=20
+        )
+        self.ui_manager.add_ui_element(button)
+
+    def on_hide_view(self):
+        self.ui_manager.unregister_handlers()
+
     def on_show(self):
         """ Called when switching to this view"""
+        self.setup()
         arcade.set_background_color(arcade.color.WHITE)
 
     def on_draw(self):
@@ -59,8 +86,8 @@ class GameView(arcade.View):
         self.ball = Ball()
         self.ball.center_x = SCREEN_WIDTH/2
         self.ball.center_y = SCREEN_HEIGHT/2
-        self.ball.change_y = 1
-        self.ball.change_x = 2
+        self.ball.change_y = randint(-4, 5)
+        self.ball.change_x = randint(-4, 5)
         self.all_sprites.append(self.ball)
         
 
