@@ -4,7 +4,7 @@ import math
 from random import uniform
 
 from arcade import Color
-from pong.constants import BALL_RADIUS, BALL_VELOCITY, SCREEN_WIDTH, SCREEN_HEIGHT
+from paddle_arcade.constants import BALL_RADIUS, BALL_VELOCITY, SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Ball(arcade.SpriteCircle):
     

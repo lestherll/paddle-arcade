@@ -1,8 +1,8 @@
 from typing import Any
 import arcade
 
-from pong.constants import PADDLE_HEIGHT, PADDLE_WIDTH
-from pong.game_objects.paddle import Paddle
+from paddle_arcade.constants import PADDLE_HEIGHT, PADDLE_WIDTH
+from paddle_arcade.game_objects.paddle import Paddle
 
 
 class Player(Paddle):

@@ -1,5 +1,4 @@
-from  pong import game
-from pong.player import Player
+from paddle_arcade import game
 
 if __name__=="__main__":
     game.main()

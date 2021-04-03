@@ -2,10 +2,10 @@ import arcade
 
 from arcade.gui import UIManager
 
-from pong.constants import *
-from pong.player import Player
-from pong.game_objects.ball import Ball
-from pong.game_objects.paddle import Paddle
+from paddle_arcade.constants import *
+from paddle_arcade.player import Player
+from paddle_arcade.game_objects.ball import Ball
+from paddle_arcade.game_objects.paddle import Paddle
 
 from random import randint
 

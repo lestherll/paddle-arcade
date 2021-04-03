@@ -1,5 +1,5 @@
 import arcade
-from pong.constants import PADDLE_HEIGHT, PADDLE_WIDTH, SCREEN_HEIGHT
+from paddle_arcade.constants import PADDLE_HEIGHT, PADDLE_WIDTH, SCREEN_HEIGHT
 
 
 class Paddle(arcade.SpriteSolidColor):
