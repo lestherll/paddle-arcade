@@ -148,6 +148,14 @@ class GameView(arcade.View):
         elif self.s_pressed and not self.w_pressed:
             self.player.change_y = -5
 
+        if self.ball.left < 0:
+            self.player.add_score()
+            print(self.player.get_score())
+        elif self.ball.right > SCREEN_WIDTH:
+            self.enemy.add_score()
+            print(self.enemy.get_score())
+        
+
         self.all_sprites.update()
         self.ball.update()
 
