@@ -5,7 +5,24 @@ from pong.player import Player
 from pong.game_objects.ball import Ball
 from pong.game_objects.paddle import Paddle
 
+class MenuView(arcade.View):
+    """ Class that manages the 'menu' view. """
 
+    def on_show(self):
+        """ Called when switching to this view"""
+        arcade.set_background_color(arcade.color.WHITE)
+
+    def on_draw(self):
+        """ Draw the menu """
+        arcade.start_render()
+        arcade.draw_text("Menu Screen - click to advance", SCREEN_WIDTH/2, SCREEN_HEIGHT/2,
+                         arcade.color.BLACK, font_size=30, anchor_x="center")
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        """ Use a mouse press to advance to the 'game' view. """
+        game_view = GameView()
+        game_view.setup()
+        self.window.show_view(game_view)
 
 class GameView(arcade.View):
     """
@@ -42,7 +59,10 @@ class GameView(arcade.View):
         self.ball = Ball()
         self.ball.center_x = SCREEN_WIDTH/2
         self.ball.center_y = SCREEN_HEIGHT/2
+        self.ball.change_y = 1
+        self.ball.change_x = 2
         self.all_sprites.append(self.ball)
+        
 
     def on_draw(self):
         """ Render the screen. """
@@ -58,14 +78,12 @@ class GameView(arcade.View):
         
         if (symbol == arcade.key.UP):
             self.up_pressed = True
-
         elif (symbol == arcade.key.DOWN):
             self.down_pressed = True
 
         if (symbol == arcade.key.W):
             self.w_pressed = True
-
-        if (symbol == arcade.key.S):
+        elif (symbol == arcade.key.S):
             self.s_pressed = True
 
     def on_key_release(self, symbol: int, modifiers: int):
@@ -101,7 +119,6 @@ class GameView(arcade.View):
 def main():
     """ Main method """
     window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-    game_view = GameView()
-    game_view.setup()
-    window.show_view(game_view)
+    menu_view = MenuView()
+    window.show_view(menu_view)
     arcade.run()
