@@ -1,8 +1,4 @@
 import arcade
-import math
-import time
-
-from random import uniform
 
 from arcade.gui import UIManager
 
@@ -56,6 +52,34 @@ class MenuView(arcade.View):
         game_view.setup()
         self.window.show_view(game_view)
 
+class EndView(arcade.View):
+
+    def __init__(self, player: Player):
+        super().__init__()
+        self.player = player
+
+    def setup(self):
+        pass
+
+    def on_show(self):
+        """ Called when switching to this view"""
+        self.setup()
+        arcade.set_background_color(arcade.color.WHITE)
+
+    def on_draw(self):
+        """ Draw the menu """
+        arcade.start_render()
+        arcade.draw_text(f"{self.player.name} WON! - click to advance", SCREEN_WIDTH/2, SCREEN_HEIGHT/2,
+                         arcade.color.BLACK, font_size=30, anchor_x="center")
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        """ Use a mouse press to advance to the 'game' view. """
+        game_view = GameView()
+        game_view.setup()
+        self.window.show_view(game_view)
+
+
+
 class GameView(arcade.View):
     """
     Main application class.
@@ -76,40 +100,23 @@ class GameView(arcade.View):
 
         arcade.set_background_color(arcade.color.BLACK)
 
-        self.player = Player()
-        self.enemy = Player()
+        self.player1 = Player(name="Player 1")
+        self.player2 = Player(name="Player 2")
         self.ball = Ball()
-        self.all_sprites.append(self.player)
-        self.all_sprites.append(self.enemy)
+        self.all_sprites.append(self.player1)
+        self.all_sprites.append(self.player2)
 
 
     def setup(self):
         """ Set up the game here """
-        self.player.center_x = 5
-        self.player.center_y = SCREEN_HEIGHT/2
+        Player.count = 0
+        self.player1.center_x = 5
+        self.player1.center_y = SCREEN_HEIGHT/2
 
-        self.enemy.center_x = SCREEN_WIDTH - 5
-        self.enemy.center_y = SCREEN_HEIGHT/2
+        self.player2.center_x = SCREEN_WIDTH - 5
+        self.player2.center_y = SCREEN_HEIGHT/2
 
         self.ball.setup()
-
-        # self.ball.center_x = SCREEN_WIDTH/2
-        # self.ball.center_y = SCREEN_HEIGHT/2
-
-        # dir = uniform(0, 1) * 360
-        
-        # while True:
-        #     if  (dir <= 45 or dir >= 315) or (dir >= 135 and dir <= 226):
-        #         dir = uniform(0, 1) * 360
-        #     else:
-        #         break
-        # print(dir)
-
-        # self.ball.change_y = BALL_VELOCITY * math.sin(dir)
-        # self.ball.change_x = BALL_VELOCITY * math.cos(dir)
-
-        # time.sleep(1)
-        # self.all_sprites.append(self.ball)
     
 
     def on_draw(self):
@@ -120,8 +127,8 @@ class GameView(arcade.View):
         for i in range(0, SCREEN_HEIGHT, SCREEN_HEIGHT//20):
             arcade.draw_line(SCREEN_WIDTH/2, i, SCREEN_WIDTH/2, i+SCREEN_HEIGHT//20-10, arcade.color.WHITE, 3)
 
-        arcade.draw_text(f"{self.player.get_score()}", SCREEN_WIDTH/2 - 50, SCREEN_HEIGHT - 40, arcade.color.WHITE, 30)
-        arcade.draw_text(f"{self.enemy.get_score()}", SCREEN_WIDTH/2 + 30, SCREEN_HEIGHT - 40, arcade.color.WHITE, 30)
+        arcade.draw_text(f"{self.player1.get_score()}", SCREEN_WIDTH/2 - 50, SCREEN_HEIGHT - 40, arcade.color.WHITE, 30)
+        arcade.draw_text(f"{self.player2.get_score()}", SCREEN_WIDTH/2 + 30, SCREEN_HEIGHT - 40, arcade.color.WHITE, 30)
 
 
         self.all_sprites.draw()
@@ -154,27 +161,32 @@ class GameView(arcade.View):
             self.s_pressed = False
 
     def on_update(self, delta_time: float):
-        self.enemy.change_y = 0
-        self.player.change_y = 0
+        self.player2.change_y = 0
+        self.player1.change_y = 0
 
         if self.up_pressed and not self.down_pressed:
-            self.enemy.change_y = 5
+            self.player2.change_y = 5
         elif self.down_pressed and not self.up_pressed:
-            self.enemy.change_y = -5
+            self.player2.change_y = -5
 
         if self.w_pressed and not self.s_pressed:
-            self.player.change_y = 5
+            self.player1.change_y = 5
         elif self.s_pressed and not self.w_pressed:
-            self.player.change_y = -5
+            self.player1.change_y = -5
 
         if self.ball.left < 0:
-            self.enemy.add_score()
-            print(self.enemy.get_score())
+            self.player2.add_score()
+            print(self.player2.get_score())
             self.setup()
         elif self.ball.right > SCREEN_WIDTH:
-            self.player.add_score()
-            print(self.player.get_score())
+            self.player1.add_score()
+            print(self.player1.get_score())
             self.setup()
+
+        for player in self.all_sprites:
+            if player.get_score() >= 1:
+                end_view = EndView(player)
+                self.window.show_view(end_view)
 
         self.all_sprites.update()
         self.ball.update()
