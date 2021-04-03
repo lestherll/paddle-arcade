@@ -19,6 +19,12 @@ class Game(arcade.Window):
 
         self.all_sprites = arcade.SpriteList()
 
+        self.up_pressed = False
+        self.down_pressed = False
+
+        self.w_pressed = False
+        self.s_pressed = False
+
         arcade.set_background_color(arcade.color.BLACK)
 
     def setup(self):
@@ -51,31 +57,44 @@ class Game(arcade.Window):
     def on_key_press(self, symbol: int, modifiers: int):
         
         if (symbol == arcade.key.UP):
-            self.enemy.change_y = 5
+            self.up_pressed = True
 
         elif (symbol == arcade.key.DOWN):
-            self.enemy.change_y = -5
+            self.down_pressed = True
 
         if (symbol == arcade.key.W):
-            self.player.change_y = 5
+            self.w_pressed = True
 
         if (symbol == arcade.key.S):
-            self.player.change_y = -5
+            self.s_pressed = True
 
     def on_key_release(self, symbol: int, modifiers: int):
         if (symbol == arcade.key.UP):
-            self.enemy.change_y = 0
+            self.up_pressed = False
 
         if (symbol == arcade.key.DOWN):
-            self.enemy.change_y = 0
+            self.down_pressed = False
 
         if (symbol == arcade.key.W):
-            self.player.change_y = 0
+            self.w_pressed = False
 
         if (symbol == arcade.key.S):
-            self.player.change_y = 0
+            self.s_pressed = False
 
     def on_update(self, delta_time: float):
+        self.enemy.change_y = 0
+        self.player.change_y = 0
+
+        if self.up_pressed and not self.down_pressed:
+            self.enemy.change_y = 5
+        elif self.down_pressed and not self.up_pressed:
+            self.enemy.change_y = -5
+
+        if self.w_pressed and not self.s_pressed:
+            self.player.change_y = 5
+        elif self.s_pressed and not self.w_pressed:
+            self.player.change_y = -5
+
         self.all_sprites.update()
 
 
