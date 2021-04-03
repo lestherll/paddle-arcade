@@ -1,4 +1,8 @@
 import arcade
+import math
+
+from random import uniform
+
 from arcade.gui import UIManager
 
 from pong.constants import *
@@ -86,9 +90,11 @@ class GameView(arcade.View):
         self.ball = Ball()
         self.ball.center_x = SCREEN_WIDTH/2
         self.ball.center_y = SCREEN_HEIGHT/2
-        self.ball.change_y = randint(-4, 5)
-        self.ball.change_x = randint(-4, 5)
-        self.all_sprites.append(self.ball)
+
+        dir = uniform(0, 1) * 360
+        self.ball.change_y = BALL_VELOCITY * math.sin(dir)
+        self.ball.change_x = BALL_VELOCITY * math.cos(dir)
+        # self.all_sprites.append(self.ball)
         
 
     def on_draw(self):
@@ -96,9 +102,11 @@ class GameView(arcade.View):
 
         arcade.start_render()
         # Code to draw the screen goes here
-        arcade.draw_line(SCREEN_WIDTH/2, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT, arcade.color.WHITE)
+        for i in range(0, SCREEN_HEIGHT, SCREEN_HEIGHT//20):
+            arcade.draw_line(SCREEN_WIDTH/2, i, SCREEN_WIDTH/2, i+SCREEN_HEIGHT//20-10, arcade.color.WHITE, 3)
 
         self.all_sprites.draw()
+        self.ball.draw()
             # print(self.player._get_position())
 
     def on_key_press(self, symbol: int, modifiers: int):
@@ -141,11 +149,21 @@ class GameView(arcade.View):
             self.player.change_y = -5
 
         self.all_sprites.update()
+        self.ball.update()
+
+        ball_hit = arcade.check_for_collision_with_list(self.ball, self.all_sprites)
+        if ball_hit:
+            self.ball.change_x *= -1
+            # self.ball.change_y = BALL_VELOCITY * math.sin(uniform(0,1)*360)
 
 
 def main():
     """ Main method """
     window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-    menu_view = MenuView()
-    window.show_view(menu_view)
+    game_view = GameView()
+    game_view.setup()
+    window.show_view(game_view)
+
+    # menu_view = MenuView()
+    # window.show_view(menu_view)
     arcade.run()
