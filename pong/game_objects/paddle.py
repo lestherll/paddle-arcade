@@ -13,5 +13,5 @@ class Paddle(arcade.SpriteSolidColor):
 
         if self.bottom < 0:
             self.bottom = 0
-        elif self.top > SCREEN_HEIGHT - 1:
-            self.top = SCREEN_HEIGHT - 1
+        elif self.top > SCREEN_HEIGHT :
+            self.top = SCREEN_HEIGHT 
