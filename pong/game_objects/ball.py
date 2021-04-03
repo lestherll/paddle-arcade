@@ -1,4 +1,7 @@
 import arcade
+import math
+
+from random import uniform
 
 from arcade import Color
 from pong.constants import BALL_RADIUS, BALL_VELOCITY, SCREEN_WIDTH, SCREEN_HEIGHT
@@ -22,3 +25,13 @@ class Ball(arcade.SpriteCircle):
             self.change_x *= -1
         elif self.right > SCREEN_WIDTH:
             self.change_x *= -1
+
+    def setup(self):
+        self.center_x = SCREEN_WIDTH/2
+        self.center_y = SCREEN_HEIGHT/2
+
+        dir = uniform(0, 1) * 360
+        print(dir)
+
+        self.change_y = BALL_VELOCITY * math.sin(dir)
+        self.change_x = BALL_VELOCITY * math.cos(dir)
