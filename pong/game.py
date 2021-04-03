@@ -7,7 +7,7 @@ from pong.game_objects.paddle import Paddle
 
 
 
-class Game(arcade.Window):
+class GameView(arcade.View):
     """
     Main application class.
     """
@@ -15,7 +15,7 @@ class Game(arcade.Window):
     def __init__(self):
 
         # Call the parent class and set up the window
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+        super().__init__()
 
         self.all_sprites = arcade.SpriteList()
 
@@ -100,6 +100,8 @@ class Game(arcade.Window):
 
 def main():
     """ Main method """
-    window = Game()
-    window.setup()
+    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    game_view = GameView()
+    game_view.setup()
+    window.show_view(game_view)
     arcade.run()
