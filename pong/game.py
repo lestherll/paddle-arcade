@@ -1,5 +1,6 @@
 import arcade
 import math
+import time
 
 from random import uniform
 
@@ -75,27 +76,41 @@ class GameView(arcade.View):
 
         arcade.set_background_color(arcade.color.BLACK)
 
-    def setup(self):
-        """ Set up the game here """
         self.player = Player()
-        self.player.center_x = 10
-        self.player.center_y = SCREEN_HEIGHT/2
-        self.all_sprites.append(self.player)
-
         self.enemy = Player()
-        self.enemy.center_x = SCREEN_WIDTH-10
-        self.enemy.center_y = SCREEN_HEIGHT/2
+        self.ball = Ball()
+        self.all_sprites.append(self.player)
         self.all_sprites.append(self.enemy)
 
-        self.ball = Ball()
-        self.ball.center_x = SCREEN_WIDTH/2
-        self.ball.center_y = SCREEN_HEIGHT/2
 
-        dir = uniform(0, 1) * 360
-        self.ball.change_y = BALL_VELOCITY * math.sin(dir)
-        self.ball.change_x = BALL_VELOCITY * math.cos(dir)
-        # self.all_sprites.append(self.ball)
+    def setup(self):
+        """ Set up the game here """
+        self.player.center_x = 5
+        self.player.center_y = SCREEN_HEIGHT/2
+
+        self.enemy.center_x = SCREEN_WIDTH - 5
+        self.enemy.center_y = SCREEN_HEIGHT/2
+
+        self.ball.setup()
+
+        # self.ball.center_x = SCREEN_WIDTH/2
+        # self.ball.center_y = SCREEN_HEIGHT/2
+
+        # dir = uniform(0, 1) * 360
         
+        # while True:
+        #     if  (dir <= 45 or dir >= 315) or (dir >= 135 and dir <= 226):
+        #         dir = uniform(0, 1) * 360
+        #     else:
+        #         break
+        # print(dir)
+
+        # self.ball.change_y = BALL_VELOCITY * math.sin(dir)
+        # self.ball.change_x = BALL_VELOCITY * math.cos(dir)
+
+        # time.sleep(1)
+        # self.all_sprites.append(self.ball)
+    
 
     def on_draw(self):
         """ Render the screen. """
@@ -104,6 +119,10 @@ class GameView(arcade.View):
         # Code to draw the screen goes here
         for i in range(0, SCREEN_HEIGHT, SCREEN_HEIGHT//20):
             arcade.draw_line(SCREEN_WIDTH/2, i, SCREEN_WIDTH/2, i+SCREEN_HEIGHT//20-10, arcade.color.WHITE, 3)
+
+        arcade.draw_text(f"{self.player.get_score()}", SCREEN_WIDTH/2 - 50, SCREEN_HEIGHT - 40, arcade.color.WHITE, 30)
+        arcade.draw_text(f"{self.enemy.get_score()}", SCREEN_WIDTH/2 + 30, SCREEN_HEIGHT - 40, arcade.color.WHITE, 30)
+
 
         self.all_sprites.draw()
         self.ball.draw()
@@ -149,12 +168,13 @@ class GameView(arcade.View):
             self.player.change_y = -5
 
         if self.ball.left < 0:
-            self.player.add_score()
-            print(self.player.get_score())
-        elif self.ball.right > SCREEN_WIDTH:
             self.enemy.add_score()
             print(self.enemy.get_score())
-        
+            self.setup()
+        elif self.ball.right > SCREEN_WIDTH:
+            self.player.add_score()
+            print(self.player.get_score())
+            self.setup()
 
         self.all_sprites.update()
         self.ball.update()
@@ -162,7 +182,6 @@ class GameView(arcade.View):
         ball_hit = arcade.check_for_collision_with_list(self.ball, self.all_sprites)
         if ball_hit:
             self.ball.change_x *= -1
-            # self.ball.change_y = BALL_VELOCITY * math.sin(uniform(0,1)*360)
 
 
 def main():
