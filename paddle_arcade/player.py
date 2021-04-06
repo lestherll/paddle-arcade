@@ -18,6 +18,3 @@ class Player(Paddle):
 
     def get_score(self):
         return self.__score
-
-    def reset(self):
-        pass
