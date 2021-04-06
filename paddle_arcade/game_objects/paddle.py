@@ -15,3 +15,7 @@ class Paddle(arcade.SpriteSolidColor):
             self.bottom = 0
         elif self.top > SCREEN_HEIGHT :
             self.top = SCREEN_HEIGHT 
+    
+    def setup(self, center_x: int , center_y: int):
+        self.center_x = center_x
+        self.center_y = center_y
