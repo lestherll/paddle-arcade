@@ -109,12 +109,13 @@ class GameView(arcade.View):
 
     def setup(self):
         """ Set up the game here """
-        Player.count = 0
-        self.player1.center_x = 5
-        self.player1.center_y = SCREEN_HEIGHT/2
+        self.player1.setup(5, SCREEN_HEIGHT/2)
+        self.player2.setup(SCREEN_WIDTH - 5, SCREEN_HEIGHT/2)
+        # self.player1.center_x = 5
+        # self.player1.center_y = SCREEN_HEIGHT/2
 
-        self.player2.center_x = SCREEN_WIDTH - 5
-        self.player2.center_y = SCREEN_HEIGHT/2
+        # self.player2.center_x = SCREEN_WIDTH - 5
+        # self.player2.center_y = SCREEN_HEIGHT/2
 
         self.ball.setup()
     
