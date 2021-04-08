@@ -15,3 +15,5 @@ This is my take on the classic pong game using python and arcade library. The ga
 - Game history using database
 - Better menu system
 - Better User experience
+- Player vs Computer
+- Player vs Player over different networks
