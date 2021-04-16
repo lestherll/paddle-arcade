@@ -16,3 +16,13 @@ def create_connection(db_file: str="./paddle_arcade/scoring/Games.db") -> Connec
         print(e)
     
     return conn
+
+
+def create_table(conn: Connection, create_tbl_statement: str) -> None:
+    """ Create a table from create_tbl_statement on the conn connection passed """
+    try:
+        c = conn.cursor()
+        c.execute(create_tbl_statement)
+    except Error as e:
+        print(e)
+
