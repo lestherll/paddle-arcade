@@ -26,3 +26,10 @@ def create_table(conn: Connection, create_tbl_statement: str) -> None:
     except Error as e:
         print(e)
 
+
+def add_game_rec(conn: Connection, p1: int, p2: int) -> None:
+    statement = "INSERT INTO Games (p1, p2, date) VALUES (?, ?, ?)"
+
+    with conn:
+        c = conn.cursor()
+        c.execute(statement, (p1, p2, str(date.today())))
