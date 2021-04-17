@@ -33,3 +33,12 @@ def add_game_rec(conn: Connection, p1: int, p2: int) -> None:
     with conn:
         c = conn.cursor()
         c.execute(statement, (p1, p2, str(date.today())))
+
+
+def delete_by_id(conn: Connection, id: int) -> None:
+    """ Delete game record by id """
+    statement = "DELETE FROM Games WHERE id=?"
+    
+    with conn:
+        c = conn.cursor()
+        c.execute(statement, (id,))
