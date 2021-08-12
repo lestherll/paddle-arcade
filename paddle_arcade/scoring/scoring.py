@@ -6,15 +6,15 @@ from sqlite3.dbapi2 import Connection, Cursor
 from datetime import date
 
 
-def create_connection(db_file: str="./paddle_arcade/scoring/Games.db") -> Connection:
+def create_connection(db_file: str = "./paddle_arcade/scoring/Games.db") -> Connection:
     """ Create a database connection to an SQLite database """
     conn = None
-    try: 
+    try:
         conn = sqlite3.connect(db_file)
         return conn
     except Error as e:
         print(e)
-    
+
     return conn
 
 
@@ -38,7 +38,7 @@ def add_game_rec(conn: Connection, p1: int, p2: int) -> None:
 def delete_by_id(conn: Connection, id: int) -> None:
     """ Delete game record by id """
     statement = "DELETE FROM Games WHERE id=?"
-    
+
     with conn:
         c = conn.cursor()
         c.execute(statement, (id,))

@@ -64,7 +64,7 @@ class EndView(arcade.View):
     def on_show(self):
         """ Called when switching to this view"""
         self.setup()
-        arcade.set_background_color(arcade.color.WHITE)
+        arcade.set_background_color(arcade.color.GRAY)
 
     def on_draw(self):
         """ Draw the menu """
@@ -185,7 +185,7 @@ class GameView(arcade.View):
             self.setup()
 
         for player in self.all_sprites:
-            if player.get_score() >= 1:
+            if player.get_score() >= 3:
                 end_view = EndView(player)
                 self.window.show_view(end_view)
 
@@ -194,6 +194,8 @@ class GameView(arcade.View):
 
         ball_hit = arcade.check_for_collision_with_list(self.ball, self.all_sprites)
         if ball_hit:
+            # self.ball.change_y = (self.ball.center_y - ball_hit[0].center_y) / PADDLE_HEIGHT
+            # self.ball.change_y = (self.ball.center_y - ball_hit[0].center_y) / PADDLE_HEIGHT
             self.ball.change_x *= -1
 
 
